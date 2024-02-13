@@ -1,0 +1,11 @@
+cmake_minimum_required(VERSION 3.26)
+
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_SOURCE_DIR}/vcpkg/scripts/buildsystems/vcpkg.cmake"
+        CACHE STRING "Vcpkg toolchain file")
+project(misis2024s_21_02_goncharov_k_a)
+
+find_package(OpenCV CONFIG REQUIRED)
+
+add_subdirectory(prj.lab)
+
