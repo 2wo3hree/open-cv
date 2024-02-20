@@ -2,14 +2,72 @@
 // Created by Константин Гончаров on 12.02.2024.
 //
 
-
 #include <opencv2/imgproc.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui.hpp>
+#include <iostream>
+#include <opencv2/opencv.hpp>
 
 
-int main() {
-    cv::Mat1b m(200, 200, 127);
-    cv::imshow("example", m);
-    cv::waitKey(0);
+
+void gammaCorrection(cv::Mat& src, cv::Mat& dst, double gamma) {
+    cv::Mat lookUpTable(1, 256, CV_8U);
+    uchar* p = lookUpTable.ptr();
+    for (int i = 0; i < 256; i++)
+        p[i] = cv::saturate_cast<uchar>(pow(i / 255.0, gamma) * 255.0);
+
+    cv::LUT(src, lookUpTable, dst);
+}
+
+void generate_gradient_image(int s, int h, double gamma, const std::string& filename = "") {
+    int width = s * h;
+    int height = s;
+
+    cv::Mat gradient(height, width, CV_8UC1);
+    for (int i = 0; i < width; ++i) {
+        int intensity = i * 255 / width;
+        gradient.col(i).setTo(intensity);
+    }
+
+    cv::Mat gamma_corrected;
+    gammaCorrection(gradient, gamma_corrected, gamma);
+
+    cv::Mat combined(height * 2, width, CV_8UC1);
+    gradient.copyTo(combined(cv::Rect(0, 0, width, height)));
+    gamma_corrected.copyTo(combined(cv::Rect(0, height, width, height)));
+
+    if (!filename.empty()) {
+        cv::imwrite(filename, combined);
+        std::cout << "Image saved to " << filename << std::endl;
+    } else {
+        cv::imshow("Gradient and Gamma Corrected Image", combined);
+        cv::waitKey(0);
+    }
+}
+
+int main(int argc, char* argv[]) {
+    int s = 3; // Ширина прямоугольника
+    int h = 30; // Высота прямоугольника
+    double gamma = 2.4; // Значение гамма-коррекции
+    std::string filename;
+
+    if (argc >= 2) {
+        s = atoi(argv[1]);
+    }
+    if (argc >= 3) {
+        h = atoi(argv[2]);
+    }
+    if (argc >= 4) {
+        gamma = atof(argv[3]);
+    }
+
+    if (argc >= 5) {
+        filename = argv[4];
+    }
+    if (argc < 5) {
+        std::cout << "Press any key to exit...";
+    }
+
+    generate_gradient_image(s, h, gamma, filename);
+    return 0;
 }
