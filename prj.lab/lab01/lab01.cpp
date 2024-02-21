@@ -13,7 +13,7 @@
 void gammaCorrection(cv::Mat& src, cv::Mat& dst, double gamma) {
     cv::Mat lookUpTable(1, 256, CV_8U);
     uchar* p = lookUpTable.ptr();
-    for (int i = 0; i < 256; i++)
+    for (int i = 0; i < 256; ++i)
         p[i] = cv::saturate_cast<uchar>(pow(i / 255.0, gamma) * 255.0);
 
     cv::LUT(src, lookUpTable, dst);
@@ -36,19 +36,19 @@ void generate_gradient_image(int s, int h, double gamma, const std::string& file
     gradient.copyTo(combined(cv::Rect(0, 0, width, height)));
     gamma_corrected.copyTo(combined(cv::Rect(0, height, width, height)));
 
-    if (!filename.empty()) {
-        cv::imwrite(filename, combined);
-        std::cout << "Image saved to " << filename << std::endl;
-    } else {
-        cv::imshow("Gradient and Gamma Corrected Image", combined);
+    if (filename.empty()) {
+        cv::imshow("Image", combined);
         cv::waitKey(0);
+    } else {
+        cv::imwrite(filename, combined);
+        std::cout << filename << std::endl;
     }
 }
 
 int main(int argc, char* argv[]) {
-    int s = 3; // Ширина прямоугольника
-    int h = 30; // Высота прямоугольника
-    double gamma = 2.4; // Значение гамма-коррекции
+    int s = 3;
+    int h = 30;
+    double gamma = 2.4;
     std::string filename;
 
     if (argc >= 2) {
@@ -64,10 +64,7 @@ int main(int argc, char* argv[]) {
     if (argc >= 5) {
         filename = argv[4];
     }
-    if (argc < 5) {
-        std::cout << "Press any key to exit...";
-    }
-
     generate_gradient_image(s, h, gamma, filename);
+
     return 0;
 }
