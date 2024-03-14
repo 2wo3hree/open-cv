@@ -20,8 +20,8 @@ void gammaCorrection(cv::Mat& src, cv::Mat& dst, double gamma) {
 }
 
 void generate_gradient_image(int s, int h, double gamma, const std::string& filename = "") {
-    int width = s * h;
-    int height = s;
+    int width = s * 256;
+    int height = h;
 
     cv::Mat gradient(height, width, CV_8UC1);
     for (int i = 0; i < width; ++i) {
