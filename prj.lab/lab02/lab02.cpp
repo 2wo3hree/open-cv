@@ -4,41 +4,82 @@
 #include <opencv2/imgproc.hpp>
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/highgui.hpp>
+#include <random>
+#include <cmath>
 
-#include <iostream>
+
+
+cv::Mat generateTestImage (int intensive1, int intensive2, int intensive3) {
+    cv::Mat image (256, 256, CV_8UC1, cv::Scalar(0));
+    cv::rectangle(image, cv::Rect(0, 0, 256, 256), cv::Scalar(intensive1), -1);
+    cv::rectangle(image, cv::Rect((256 - 209) / 2, (256 - 209) / 2, 209, 209), cv::Scalar(intensive2), -1);
+    cv::circle(image, cv::Point(256/2, 256/2), 83, cv::Scalar(intensive3), -1);
+    return image;
+}
+
+cv::Mat drawHistogram (cv::Mat image) {
+    cv::Mat background(256, 256, CV_8UC1, cv::Scalar(230));
+    cv::Mat hist;
+    const int histSize = 256;
+    float range[] = { 0, 256 };
+    const float* histRange = { range };
+    cv::calcHist(&image, 1, 0, cv::Mat(), hist, 1, &histSize, &histRange, true, false);
+    cv::normalize(hist, hist, 0, 230, cv::NORM_MINMAX);
+    for (int i = 0; i < histSize; i++) {
+        cv::rectangle(background, cv::Rect(i, 256 - hist.at<float>(i, 0), 1, hist.at<float>(i, 0)), cv::Scalar(0), -1);
+    }
+
+    return background;
+}
+
+cv::Mat addNoise(cv::Mat& image, double stddev) {
+    cv::Mat cloneImage = image.clone();
+    std::random_device device;
+    std::mt19937 generator(device());
+    double min = 0.0;
+    double max = 1.0;
+    std::uniform_real_distribution<double> distribution(min, max);
+
+    int rows = cloneImage.rows;
+    int cols = cloneImage.cols;
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            double u = distribution(generator);
+            double v = distribution(generator);
+            double rand_numb_box_muller = sqrt(-2 * log(v)) * cos(2 * M_PI * u);
+            cloneImage.at<uchar>(i, j) = cv::saturate_cast<uchar>(cloneImage.at<uchar>(i, j) + (stddev * rand_numb_box_muller));
+        }
+    }
+
+    return cloneImage;
+}
 
 int main() {
-    const int w = 209;
-    uint8_t color_low = 20;
-    uint8_t color_mid = 127;
-    uint8_t color_hig = 255 - color_low;
-    cv::Mat m = cv::Mat1b(256, 256);
-    m = color_low;
-    const cv::Rect2i rc = { (256 - w) / 2, (256 - w) / 2, w, w };
-    cv::rectangle(m, rc, cv::Scalar(color_mid), cv::FILLED);
-    cv::circle(m, {128, 128}, 83, cv::Scalar(color_hig), cv::FILLED);
+    int intensive[4][3] = {{0, 127, 255}, {20, 127, 235}, {55, 127, 200}, {90, 127, 165}};
+    int noise[3] = {3, 7, 15};
+    cv::Mat baseMat = cv::Mat::zeros(256 * 8 , 256 * 4, CV_8UC1);
 
-    auto mask_low = m == color_low;
-    auto mask_mid = m == color_mid;
-    auto mask_hig = m == color_hig;
+    for (int i = 0; i < sizeof(intensive) / sizeof(intensive[0]); ++i) {
+        int y = 0;
+        cv::Mat testimg = generateTestImage (intensive[i][0], intensive[i][1], intensive[i][2]);
+        testimg.copyTo(baseMat(cv::Rect(i * 256, y, 256, 256)));
+        y += 256;
 
-    std::cout
-            << "low:" << cv::countNonZero(mask_low)
-            << " mid:" << cv::countNonZero(mask_mid)
-            << " hig:" << cv::countNonZero(mask_hig)
-            << std::endl;
+        cv::Mat hist = drawHistogram(testimg);
+        hist.copyTo(baseMat(cv::Rect(i * 256, y, 256, 256)));
+        y += 256;
 
-    cv::imshow("mask_low", mask_low);
-    cv::imshow("mask_mid", mask_mid);
-    cv::imshow("mask_hig", mask_hig);
-    cv::imshow("example", m);
-
-    cv::Mat noise(256, 256, CV_8SC1);
-    cv::randn(noise, 0, 15);
-    m += noise;
-
-    cv::imshow("noised", m);
-    cv::imwrite("lab02.png", m);
-
+        for (int j = 0; j < sizeof(noise) / sizeof(noise[0]); ++j) {
+            cv::Mat noiseimage = addNoise(testimg, noise[j]);
+            noiseimage.copyTo(baseMat(cv::Rect(i * 256, y, 256, 256)));
+            y += 256;
+            cv::Mat histNoise = drawHistogram(noiseimage);
+            histNoise.copyTo(baseMat(cv::Rect(i * 256, y, 256, 256)));
+            y += 256;
+        }
+    }
+    cv::imshow("Image", baseMat);
     cv::waitKey(0);
+
+    return 0;
 }

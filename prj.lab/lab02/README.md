@@ -1,0 +1,1 @@
+![lab02.jpg](../lab01/images/lab02.png)
