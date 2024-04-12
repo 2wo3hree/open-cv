@@ -34,18 +34,14 @@ cv::Mat drawHistogram (cv::Mat image) {
 
 cv::Mat addNoise(cv::Mat& image, double stddev) {
     cv::Mat cloneImage = image.clone();
-    std::random_device device;
-    std::mt19937 generator(device());
-    double min = 0.0;
-    double max = 1.0;
-    std::uniform_real_distribution<double> distribution(min, max);
 
     int rows = cloneImage.rows;
     int cols = cloneImage.cols;
+
     for (int i = 0; i < rows; ++i) {
         for (int j = 0; j < cols; ++j) {
-            double u = distribution(generator);
-            double v = distribution(generator);
+            double u = (double)rand() / RAND_MAX;
+            double v = (double)rand() / RAND_MAX;
             double rand_numb_box_muller = sqrt(-2 * log(v)) * cos(2 * M_PI * u);
             cloneImage.at<uchar>(i, j) = cv::saturate_cast<uchar>(cloneImage.at<uchar>(i, j) + (stddev * rand_numb_box_muller));
         }
@@ -53,6 +49,7 @@ cv::Mat addNoise(cv::Mat& image, double stddev) {
 
     return cloneImage;
 }
+
 
 int main() {
     int intensive[4][3] = {{0, 127, 255}, {20, 127, 235}, {55, 127, 200}, {90, 127, 165}};
