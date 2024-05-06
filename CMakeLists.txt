@@ -16,4 +16,10 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_CURRENT_SOURCE_DIR}/bi
 find_package(OpenCV CONFIG REQUIRED)
 
 add_subdirectory(prj.lab)
+add_subdirectory(prj.cw)
+# Укажите путь к вашим фотографиям
+set(IMAGES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/prj.lab/lab01/images")
+
+# Копирование фотографий в директорию сборки
+file(COPY ${IMAGES_DIR} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
