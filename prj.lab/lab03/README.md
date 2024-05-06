@@ -45,16 +45,16 @@
 
 | Черно-белое изображение                          |                                                       |  |
 |--------------------------------------------------|-------------------------------------------------------|--|
-| ![Оригинал](../lab01/images/lab03_1_channel.jpg) | ![1%](../lab01/images/lab03_1_channel_contrast_1.jpg) | ![5%](../lab01/images/lab03_1_channel_contrast_10%.jpg) |
+| ![Оригинал](../lab01/images/lab03_1_channel.jpg) | ![1%](../lab01/images/lab03_1_channel_contrast_1.jpg) | ![5%](../lab01/images/lab03_1_channel_contrast_10.jpg) |
 | *Оригинал*                                       | *1%*                                                  | *10%* |
 
 | Цветное, по каналам                                                                           |                                                                                                   |                                                                                                                 |
 |-----------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------|
-| ![Оригинал](../lab01/images/lab03_color_1.jpeg) ![Оригинал](../lab01/images/lab03_color_2.jpeg) | ![1%](../lab01/images/lab03_color_1_perChannel_1%.jpg)  ![1%](../lab01/images/lab03_color_2_perChannel_1%.jpg) | ![10%](../lab01/images/lab03_color_1_perChannel_10%.jpg) ![10%](../lab01/images/lab03_color_2_perChannel_10%.jpg) |
+| ![Оригинал](../lab01/images/lab03_color_1.jpeg) ![Оригинал](../lab01/images/lab03_color_2.jpeg) | ![1%](../lab01/images/lab03_color_1_perChannel_1.jpg)  ![1%](../lab01/images/lab03_color_2_perChannel_1.jpg) | ![10%](../lab01/images/lab03_color_1_perChannel_10.jpg) ![10%](../lab01/images/lab03_color_2_perChannel_10.jpg) |
 | *Оригинал*                                                                                    | *1%*                                                                                              | *10%*                                                                                                           |
 
 | Цветное, совместно                                                                                        |                                                                                                              |
 |-----------------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
-| ![1%](../lab01/images/lab03_color_1_combined_1%.jpg) ![1%](../lab01/images/lab03_color_2_combined_1%.jpg) | ![10%](../lab01/images/lab03_color_1_combined_10%.jpg)  ![1%](../lab01/images/lab03_color_2_combined_1%.jpg) |
+| ![1%](../lab01/images/lab03_color_1_combined_1.jpg) ![1%](../lab01/images/lab03_color_2_combined_1.jpg) | ![10%](../lab01/images/lab03_color_1_combined_10.jpg)  ![1%](../lab01/images/lab03_color_2_combined_1.jpg) |
 | *1%*                                                                                                      | *10%*                                                                                                        |
 
