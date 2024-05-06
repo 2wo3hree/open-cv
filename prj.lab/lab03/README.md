@@ -45,7 +45,7 @@
 
 | Черно-белое изображение                          |                                                        |  |
 |--------------------------------------------------|--------------------------------------------------------|--|
-| ![Оригинал](../lab01/images/lab03_1_channel.jpg) | ![1%](../lab01/images/lab03_1_channel_contrast_1%.jpg) | ![5%](../lab01/images/lab03_1_channel_contrast_10%.jpg) |
+|  | ![1%](../lab01/images/lab03_1_channel_contrast_1%.jpg) | ![5%](../lab01/images/lab03_1_channel_contrast_10%.jpg) |
 | *Оригинал*                                       | *1%*                                                   | *10%* |
 
 | Цветное, по каналам                                                                           |                                                                                                   |                                                                                                                 |
