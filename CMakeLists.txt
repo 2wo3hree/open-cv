@@ -23,3 +23,7 @@ set(IMAGES_DIR "${CMAKE_CURRENT_SOURCE_DIR}/prj.lab/lab01/images")
 # Копирование фотографий в директорию сборки
 file(COPY ${IMAGES_DIR} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
+set(IMAGES_DIR2 "${CMAKE_CURRENT_SOURCE_DIR}/prj.cw/images")
+
+# Копирование фотографий в директорию сборки
+file(COPY ${IMAGES_DIR2} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
